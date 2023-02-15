@@ -1,0 +1,39 @@
+{
+    "authors": [
+        {
+            "email": "inclub9@gmail.com",
+            "homepage": "https://www.adiwit.co.th",
+            "name": "Supphanut Kala"
+        }
+    ],
+    "autoload": {
+        "classmap": [],
+        "psr-4": {
+            "Nttps\\Thailand\\": "src"
+        }
+    },
+    "description": "",
+    "discard-changes": true,
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Nttps\\Thailand\\ThailandServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "name": "Nttps/thailand",
+    "prefer-stable": true,
+    "repositories": [
+        {
+            "type": "git",
+            "url": "git@gitlab.com:packages.adiwit.co.th/countries.git"
+        }
+    ],
+    "require": {
+        "Nttps/countries": "dev-master"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.5"
+    }
+}
