@@ -22,7 +22,6 @@ class CreateDimZipcodesTable extends Migration
     {
         Schema::create((new ZipCode())->getTable(), function (Blueprint $table) {
             $table->unsignedSmallInteger('id')->primary();
-            $table->unsignedTinyInteger('country_id');
             $table->unsignedSmallInteger('district_id');
             $table->decimal('latitude', 10, 8)->nullable();
             $table->decimal('longitude', 11, 8)->nullable();
@@ -30,33 +29,13 @@ class CreateDimZipcodesTable extends Migration
             $table->unsignedTinyInteger('province_id');
             $table->unsignedSmallInteger('sub_district_id');
             $table->unsignedInteger('zip_code');
-            $table->audits();
-            // $table->moderations();
-            // $table->owner();
             $table->softDeletes();
 
             // Foreign Key Constraints
-            $table->foreign('country_id')
-                ->references('id')
-                ->on((new Country())->getTable())
-                ->onUpdate('cascade');
-
             $table->foreign('geography_id')
                 ->references('id')
                 ->on((new Geography())->getTable())
                 ->onUpdate('cascade');
-
-            // ไม่มี 97
-            // $table->foreign('province_id')
-            //     ->references('id')
-            //     ->on((new Province())->getTable())
-            //     ->onUpdate('cascade');
-
-            // ไม่มี 468
-            // $table->foreign('district_id')
-            //     ->references('id')
-            //     ->on((new District())->getTable())
-            //     ->onUpdate('cascade');
 
             $table->foreign('sub_district_id')
                 ->references('id')
@@ -70,10 +49,9 @@ class CreateDimZipcodesTable extends Migration
         // $districts          = District::select(['id'])->get()->keyBy('id'); // ,'name_thai'
         $provincesById      = Province::select(['id', 'geography_id'])->get()->keyBy('id'); // ,'name_thai'
         $subDistricts       = SubDistrict::select(['id', 'name_thai'])->get()->keyBy('id'); 
-        $thailandId         = Country::where('cca3', 'LIKE', 'THA')->select('id')->first()->id ?? 220;
 
         collect(json_decode(File::get(__DIR__ . '/../jsons/zipcodes.json')))
-            ->map(function ($obj) use (&$coordinates, &$provincesById, &$subDistricts, &$thailandId) {
+            ->map(function ($obj) use (&$coordinates, &$provincesById, &$subDistricts) {
                 // , &$districts) {
                 $zipCode          = $obj->ZIPCODE;
                 $coordinate       = $coordinates->get($zipCode);
@@ -98,7 +76,6 @@ class CreateDimZipcodesTable extends Migration
 
                 return [
                     'id'                => (int) $obj->ZIPCODE_ID,
-                    'country_id'        => $thailandId,
                     'district_id'       => $obj->DISTRICT_ID,
                     'geography_id'      => $provincesById->get($obj->PROVINCE_ID)->geography_id,
                     "latitude"          => $latitude ?? null,

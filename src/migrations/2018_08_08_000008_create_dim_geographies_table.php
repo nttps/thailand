@@ -19,27 +19,14 @@ class CreateDimGeographiesTable extends Migration
             $table->unsignedTinyInteger('id')->primary();
             $table->string('name_english')->nullable();
             $table->string('name_thai');
-            $table->unsignedTinyInteger('country_id');
-            $table->audits();
-            // $table->moderations();
-            // $table->owner();
             $table->softDeletes();
-
-            // Foreign Key Constraints
-            $table
-                ->foreign('country_id')
-                ->references('id')
-                ->on((new Country())->getTable())
-                ->onUpdate('cascade');
         });
 
         // Data
-        $countryId = Country::where('cca3', 'LIKE', 'THA')->select('id')->first()->id ?? 220;
         collect(json_decode(File::get(__DIR__ . '/../jsons/geography.json')))
-            ->map(function ($obj) use ($countryId) {
+            ->map(function ($obj) {
                 return [
                     'id'            => (int) $obj->GEO_ID,
-                    'country_id'    => $countryId,
                     'name_thai'     => $obj->GEO_NAME,
                 ];
             })->chunk(600)->each(function ($chunk) {

@@ -1,9 +1,8 @@
 {
     "authors": [
         {
-            "email": "inclub9@gmail.com",
-            "homepage": "https://www.adiwit.co.th",
-            "name": "Supphanut Kala"
+            "email": "teamerze@gmail.com",
+            "name": "TEAM"
         }
     ],
     "autoload": {
@@ -22,17 +21,8 @@
         }
     },
     "minimum-stability": "dev",
-    "name": "Nttps/thailand",
+    "name": "nttps/thailand",
     "prefer-stable": true,
-    "repositories": [
-        {
-            "type": "git",
-            "url": "git@gitlab.com:packages.adiwit.co.th/countries.git"
-        }
-    ],
-    "require": {
-        "Nttps/countries": "dev-master"
-    },
     "require-dev": {
         "squizlabs/php_codesniffer": "^3.5"
     }
